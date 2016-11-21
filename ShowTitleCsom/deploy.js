@@ -2,7 +2,7 @@ var spsave = require("spsave").spsave;
 var fs = require('fs');
 
 var coreOptions = {
-    siteUrl: process.env.SPONLINE_APPS_DOCLIB,
+    siteUrl: process.env.SPONLINE_SITE_APPS,
     notification: true,
     checkin: true,
     checkinType: 1
@@ -14,7 +14,7 @@ var creds = {
 };
  
 var fileOptions = {
-    folder: 'showtitlecsom',
+    folder: 'apppages/showtitlecsom',
     fileName: 'index.aspx',
     fileContent: fs.readFileSync('index.aspx')
 };
