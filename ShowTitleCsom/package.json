@@ -1,0 +1,18 @@
+{
+  "name": "sponlinepwa",
+  "version": "1.0.0",
+  "description": "A progressive web app on SharePoint Online",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pwa",
+    "sponline"
+  ],
+  "author": "Serge van den Oever",
+  "license": "MIT",
+  "devDependencies": {
+    "spsave": "^3.0.1"
+  }
+}
