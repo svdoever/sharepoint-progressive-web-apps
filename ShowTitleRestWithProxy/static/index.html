@@ -1,28 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Show title using REST</title>
-        <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
+<head>
+    <title>Show title using REST</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.1/fetch.min.js"></script>
-    </head>
-    <body>
-       <h1 id="title">Loading...</h1>
- 
-        <script>
-            fetch('/_api/web/title')
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(json) {
-                title = json.body.d.Title;
-                var titleElement = document.getElementById('title');
-                titleElement.innerHTML = title;
-            })
-            .catch(function(ex) {
-                console.log('Error:', ex)
-            });
-        </script>
-    </body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.1/fetch.min.js"></script>
+</head>
+<body>
+    <h1 id="title">Loading...</h1>
+    <script>
+        function sp_api_get_json(uri) {
+            return fetch(new Request(uri, 
+                { 
+                    credentials: 'include', 
+                    headers: new Headers({"Accept": "application/json; odata=verbose"}) 
+                }))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(json) {
+                    return json.body === undefined? json.d : json.body.d;
+                });
+        }
+
+        sp_api_get_json("http://localhost:8081/_api/web/title")
+        .then(function(json) {
+            title = json.Title;
+            var titleElement = document.getElementById('title');
+            titleElement.innerHTML = title;
+        })
+        .catch(function(ex) {
+            console.log('Error:', ex)
+        });
+    </script>
+</body>
 </html>

@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "node ./server.js",
+    "api": "cd node_modules/sp-rest-proxy && npm run serve",
+    "deploy": "node ./deploy.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -14,7 +16,7 @@
   "author": "Serge van den Oever",
   "license": "MIT",
   "devDependencies": {
-    "sp-rest-proxy": "^1.1.1",
+    "sp-rest-proxy": "^1.1.5",
     "spsave": "^3.0.1"
   }
 }
