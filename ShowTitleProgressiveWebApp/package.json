@@ -1,0 +1,22 @@
+{
+  "name": "sponlinepwa",
+  "version": "1.0.0",
+  "description": "A progressive web app on SharePoint Online",
+  "main": "index.js",
+  "scripts": {
+    "serve": "node ./server.js",
+    "api": "cd node_modules/sp-rest-proxy && npm run serve",
+    "deploy": "node ./deploy.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pwa",
+    "sponline"
+  ],
+  "author": "Serge van den Oever",
+  "license": "MIT",
+  "devDependencies": {
+    "sp-rest-proxy": "^1.1.5",
+    "spsave": "^3.0.1"
+  }
+}
