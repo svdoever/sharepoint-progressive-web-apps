@@ -6,7 +6,8 @@
   "scripts": {
     "serve": "node ./server.js",
     "api": "cd node_modules/sp-rest-proxy && npm run serve",
-    "deploy": "node ./deploy.js",
+    "codedeploy": "node ./deploy.js", 
+    "deploy": "node ./deploy.js assets", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -16,7 +17,8 @@
   "author": "Serge van den Oever",
   "license": "MIT",
   "devDependencies": {
-    "sp-rest-proxy": "^1.1.5",
+    "minimist": "^1.2.0",
+    "sp-rest-proxy": "^1.1.9",
     "spsave": "^3.0.1"
   }
 }

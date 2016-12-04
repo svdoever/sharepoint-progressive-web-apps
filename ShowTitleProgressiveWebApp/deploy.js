@@ -2,6 +2,11 @@ var Cpass = require("cpass");
 var cpass = new Cpass();
 var spsave = require("spsave").spsave;
 var fs = require('fs');
+
+var argv = require('minimist')(process.argv.slice(2));
+var deployAssets = argv._.length === 1 && argv._[0] === "assets"? true : false;
+
+
 var configFile = __dirname + '/config/_private.conf.json';
 
 if (!fs.existsSync(configFile)) {
@@ -30,7 +35,7 @@ var indexFileOptions = {
 };
 
 var assetFileOptions = {
-    glob: 'static/**/*.*[^html]',
+    glob: 'static/**/!(*.html)',
     base: 'static',
     folder: 'apppages/showtitlepwa'
 };
@@ -38,10 +43,15 @@ var assetFileOptions = {
 spsave(coreOptions, creds, indexFileOptions)
 .then(function(){
     console.log('index.aspx saved');
-    return spsave(coreOptions, creds, assetFileOptions);
-})
-.then(function(){
-    console.log('other artifacts saved');
+    if (deployAssets) {
+        spsave(coreOptions, creds, assetFileOptions)
+        .then(function(){
+            console.log('other artifacts saved');
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    } 
 })
 .catch(function(err){
     console.log(err);

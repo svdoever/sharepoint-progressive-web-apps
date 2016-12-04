@@ -4,14 +4,18 @@
     <title>SP Title</title>
     <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
 
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json.txt">
     <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="apple-mobile-web-app-title" content="SP Title">
-    <meta name="application-name" content="SP Title">
     <meta name="theme-color" content="#ffffff">
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
@@ -20,6 +24,10 @@
 <body>
     <h1 id="title">Loading...</h1>
     <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
+
         function sp_api_get_json(uri) {
             return fetch(new Request(uri, 
                 { 
@@ -30,7 +38,7 @@
                     return response.json();
                 })
                 .then(function(json) {
-                    return json.body === undefined? json.d : json.body.d;
+                    return json.d;
                 });
         }
 
