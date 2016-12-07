@@ -14,7 +14,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="manifest.json.txt">
+    <link rel="manifest" href="manifest.webmanifest" crossOrigin="use-credentials">
+    <!--     <link rel="manifest" href="https://dl.dropboxusercontent.com/u/7197720/www/pwa/manifest.json.txt"> -->
+
     <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
     <meta name="theme-color" content="#ffffff">
 
@@ -25,7 +27,13 @@
     <h1 id="title">Loading...</h1>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js');
+            if (navigator.serviceWorker) {
+                navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope:',  registration.scope);
+                }).catch(function(error) {
+                    console.log('ServiceWorker registration failed:', error);
+                });
+            }        
         }
 
         function sp_api_get_json(uri) {
