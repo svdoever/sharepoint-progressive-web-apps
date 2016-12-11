@@ -40,12 +40,6 @@ var manifestFileOptions = {
     fileContent: String(fs.readFileSync('static/manifest.webmanifest')).replace('index.html', 'index.aspx')
 };
 
-// var indexFileOptions = {
-//     folder: 'apppages/showtitlepwa',
-//     fileName: 'manifest.aspx',
-//     fileContent: String(fs.readFileSync('static/manifest.aspx'))
-// };
-
 var assetFileOptions = {
     glob: 'static/**/!(*.html)',
     base: 'static',
