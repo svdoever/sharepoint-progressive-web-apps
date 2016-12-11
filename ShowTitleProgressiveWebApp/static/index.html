@@ -49,7 +49,7 @@
                 });
         }
 
-        sp_api_get_json("http://localhost:8081/_api/web/title")
+        sp_api_get_json("/_api/web/title")
         .then(function(json) {
             title = json.Title;
             var titleElement = document.getElementById('title');

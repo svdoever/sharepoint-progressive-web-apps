@@ -31,7 +31,7 @@ var creds = {
 var indexFileOptions = {
     folder: 'apppages/showtitlepwa',
     fileName: 'index.aspx',
-    fileContent: String(fs.readFileSync('static/index.html')).replace('http://localhost:8081', config.siteUrl)
+    fileContent: String(fs.readFileSync('static/index.html')).replace('/_api/', config.siteUrl + '/_api/')
 };
 
 var manifestFileOptions = {
