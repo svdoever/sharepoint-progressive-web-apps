@@ -9,15 +9,16 @@ var urlsToCache = [
 ];
 
 self.addEventListener('install', function (event) {
+    debugger;
     console.log('Service Worker installing.');
     // Perform install steps
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(function (cache) {
-                console.log('Opened cache');
-                return cache.addAll(urlsToCache);
-            })
-    );
+    // event.waitUntil(
+    //     caches.open(CACHE_NAME)
+    //         .then(function (cache) {
+    //             console.log('Opened cache');
+    //             return cache.addAll(urlsToCache);
+    //         })
+    // );
 });
 
 self.addEventListener('activate', function(event) {
@@ -25,6 +26,7 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function (event) {
+    debugger;
     console.log("service worker intercepting fetch()");
     event.respondWith(
         caches.match(event.request)
@@ -39,8 +41,8 @@ self.addEventListener('fetch', function (event) {
                 // once by cache and once by the browser for fetch, we need
                 // to clone the response.
                 var fetchRequest = event.request.clone();
-                console.log("fetching request: " + fetchRequest);
-                return fetch(fetchRequest).then(
+                console.log("fetching request: ", fetchRequest);
+                return fetch(fetchRequest, {mode: 'no-cors', credentials: 'include'}).then(
                     function (response) {
                         // Check if we received a valid response
                         if (!response || response.status !== 200 || response.type !== 'basic') {
@@ -62,7 +64,11 @@ self.addEventListener('fetch', function (event) {
 
                         return response;
                     }
-                );
+                ).catch(function(error) {
+                    console.error('Fetching failed:', error);
+
+                    throw error;
+                });
             }
             )
     );
