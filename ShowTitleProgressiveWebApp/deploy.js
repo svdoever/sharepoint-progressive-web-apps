@@ -40,6 +40,12 @@ var manifestFileOptions = {
     fileContent: String(fs.readFileSync('static/manifest.webmanifest')).replace('index.html', 'index.aspx')
 };
 
+var serviceworkerFileOptions = {
+    folder: 'apppages/showtitlepwa',
+    fileName: 'service-worker.js',
+    fileContent: String(fs.readFileSync('static/service-worker.js')).replace('index.html', 'index.aspx')
+};
+
 var assetFileOptions = {
     glob: 'static/**/!(*.html)',
     base: 'static',
@@ -49,19 +55,23 @@ var assetFileOptions = {
 spsave(coreOptions, creds, indexFileOptions)
 .then(function(){
     console.log('index.aspx fixed and saved');
-    spsave(coreOptions, creds, manifestFileOptions)
-    .then(function(){
-        console.log('manifest.webmanifest fixed and saved');
-        if (deployAssets) {
-            spsave(coreOptions, creds, assetFileOptions)
-            .then(function(){
-                console.log('other artifacts saved');
-            })
-            .catch(function(err){
-                console.log(err);
-            });
-        }
-    }) 
+    return spsave(coreOptions, creds, manifestFileOptions);
+})
+.then(function(){
+    console.log('imanifest.webmanifest fixed and saved');
+    return spsave(coreOptions, creds, serviceworkerFileOptions);
+})
+.then(function(){
+    console.log('service-worker.js fixed and saved');
+    if (deployAssets) {
+        console.log('deploying assets');
+        return spsave(coreOptions, creds, assetFileOptions);
+    } else {
+        return Promise.resolve();
+    }
+})
+.then(function() {
+    console.log("DONE.");
 })
 .catch(function(err){
     console.log(err);

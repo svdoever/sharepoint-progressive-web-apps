@@ -2,7 +2,7 @@
 	"name": "SharePoint Title",
 	"short_name": "SP Title",
 	"description": "The one and only SharePoint Site Title program!",
-	"start_url": "index.html?home=true",
+	"start_url": "index.html",
 	"icons": [
 		{
 			"src": "android-chrome-128x128.png",
