@@ -1,24 +1,12 @@
-/* code from https://developers.google.com/web/fundamentals/getting-started/primers/service-workers */
+// service-worker.js provides offline functionality
+//
+// We can't pre-install artifacts when hosted in SharePoint, we need authenticated requests for caching
 
+/* Increase caching version for new releases */
 var CACHE_NAME = 'sptitle-cache-v1';
-var urlsToCache = [
-    'favicon-16x16.png',
-    'index.html',
-    'es6-promise.min.js',
-    'fetch.min.js'
-];
 
 self.addEventListener('install', function (event) {
-    debugger;
     console.log('Service Worker installing.');
-    // Perform install steps
-    // event.waitUntil(
-    //     caches.open(CACHE_NAME)
-    //         .then(function (cache) {
-    //             console.log('Opened cache');
-    //             return cache.addAll(urlsToCache);
-    //         })
-    // );
 });
 
 self.addEventListener('activate', function(event) {
@@ -26,27 +14,44 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function (event) {
-    debugger;
-    console.log("service worker intercepting fetch()");
+    var prefix = 'http://localhost:8081';
+    console.log("service worker intercepting fetch(" + event.request.url + "," +  event.request.method + ")");
+    if (event.request.method !== 'GET') return;
+    if (!event.request.url.toLowerCase().startsWith(prefix.toLowerCase())) return;
+
     event.respondWith(
         caches.match(event.request)
             .then(function (response) {
+                console.log('caches match executed, response:', response);
                 // Cache hit - return response
                 if (response) {
                     console.log('respond from cache for url ' + response.url);
                     return response;
                 }
+                // no match from cache
+
                 // IMPORTANT: Clone the request. A request is a stream and
                 // can only be consumed once. Since we are consuming this
                 // once by cache and once by the browser for fetch, we need
                 // to clone the response.
-                var fetchRequest = event.request.clone();
+                console.log("intercepting fetch request: ", event.request);
+                var fetchRequest = new Request(event.request.url, {
+                    method: 'GET', //event.request.method,
+                    headers: event.request.headers,
+                    context: event.request.context,
+                    referrer:event.request.url, //event.request.referrer,
+                    referrerPolicy: event.request.referrerPolicy,
+                    mode: 'cors', 
+                    credentials: 'include',
+                    redirect: 'manual',
+                    body: event.request.body
+                });
                 console.log("fetching request: ", fetchRequest);
-                return fetch(fetchRequest, {mode: 'no-cors', credentials: 'include'}).then(
+                return fetch(fetchRequest).then(
                     function (response) {
                         // Check if we received a valid response
                         if (!response || response.status !== 200 || response.type !== 'basic') {
-                            //console.log("Invalid response from fetch(): ", response);
+                            console.log("Invalid response from fetch(): ", response);
                             return response;
                         }
 
@@ -71,5 +76,10 @@ self.addEventListener('fetch', function (event) {
                 });
             }
             )
+            .catch(function(error) {
+                console.error('Cache match failed:', error);
+
+                throw error;
+            })
     );
 });

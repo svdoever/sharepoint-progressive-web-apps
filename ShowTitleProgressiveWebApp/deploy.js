@@ -43,7 +43,7 @@ var manifestFileOptions = {
 var serviceworkerFileOptions = {
     folder: 'apppages/showtitlepwa',
     fileName: 'service-worker.js',
-    fileContent: String(fs.readFileSync('static/service-worker.js')).replace('index.html', 'index.aspx')
+    fileContent: String(fs.readFileSync('static/service-worker.js')).replace('http://localhost:8081', config.siteUrl).replace('index.html', 'index.aspx')
 };
 
 var assetFileOptions = {
