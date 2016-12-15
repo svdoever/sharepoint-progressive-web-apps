@@ -39,7 +39,7 @@ self.addEventListener('fetch', function (event) {
                     method: 'GET', //event.request.method,
                     headers: event.request.headers,
                     context: event.request.context,
-                    referrer:event.request.url, //event.request.referrer,
+                    referrer:event.request.url, // must be same domain
                     referrerPolicy: event.request.referrerPolicy,
                     mode: 'cors', 
                     credentials: 'include',
